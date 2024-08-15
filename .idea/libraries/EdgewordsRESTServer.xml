@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="EdgewordsRESTServer">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/EdgewordsRESTServer.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
