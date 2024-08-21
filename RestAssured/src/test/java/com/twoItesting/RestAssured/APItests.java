@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.*;
-        import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.lessThan;
 
 public class APItests {
@@ -28,25 +28,28 @@ public class APItests {
     }
 
     @Test
-    void getAllProducts() { // get all products, check status code is 200 and response time < 1000ms
-        System.out.printf("Test getAllProducts response body:");
-        when().get("/products")
-                .then().log().body()
-                .assertThat().statusCode(200)
-                .time(lessThan(1000L));
+    void requstAllProducts_checkStatusCode_expecHttp200() {
+        given().when().get("/products").then().assertThat().statusCode(200);
     }
 
     @Test
-    void getProductWithID1() { // get Product ID=1 and check that name is 'Ipad'
+    void requstAllProducts_checkContentType_expectApplicaitonJson() {
+        given().when().get("/products").then().assertThat().contentType(ContentType.JSON);
+    }
+
+    @Test
+    void requestAllProducts_checkResponseTime_expectResponseTimeIsLessThan1000ms() {
+        when().get("/products").then().time(lessThan(1000L));
+    }
+
+    @Test
+    void requestProductWithID1_checkNameInResponseBody_expectIpad() { // get Product ID=1 and check that name is 'Ipad'
         System.out.println("Test getProductWithID1 response body:");
-        when().get("/products/1")
-                .then().log().body()
-                .assertThat().body("name", equalTo("iPad"))
-                .statusCode(200);
+        when().get("/products/1").then().log().body().assertThat().body("name", equalTo("iPad"));
     }
 
     @Test
-    void newProduct() {
+    void runComplexTest_checkComplexRequirements_expectItToAllGoToPlan() {
 
         System.out.println("Test newProduct:");
 
