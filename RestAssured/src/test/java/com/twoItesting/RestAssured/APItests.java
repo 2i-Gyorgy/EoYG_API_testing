@@ -20,8 +20,8 @@ public class APItests {
         RequestSpecification spec = given();
         spec.baseUri("http://localhost");
         spec.port(2002);
-        spec.contentType(ContentType.JSON);
         spec.basePath("/api");
+        spec.contentType(ContentType.JSON);
         spec.auth().basic(dotenv.get("API_USER"), dotenv.get("API_PASSWORD"));
 
         requestSpecification = spec;
@@ -39,13 +39,13 @@ public class APItests {
 
     @Test
     void requestAllProducts_checkResponseTime_expectResponseTimeIsLessThan1000ms() {
-        when().get("/products").then().time(lessThan(1000L));
+        given().when().get("/products").then().time(lessThan(1000L));
     }
 
     @Test
     void requestProductWithID1_checkNameInResponseBody_expectIpad() { // get Product ID=1 and check that name is 'Ipad'
         System.out.println("Test getProductWithID1 response body:");
-        when().get("/products/1").then().log().body().assertThat().body("name", equalTo("iPad"));
+        given().when().get("/products/1").then().log().body().assertThat().body("name", equalTo("iPad"));
     }
 
     @Test
