@@ -29,23 +29,43 @@ public class APItests {
 
     @Test
     void requstAllProducts_checkStatusCode_expecHttp200() {
-        given().when().get("/products").then().assertThat().statusCode(200);
+        given()
+                .when()
+                    .get("/products")
+                .then()
+                    .assertThat()
+                    .statusCode(200);
     }
 
     @Test
     void requstAllProducts_checkContentType_expectApplicaitonJson() {
-        given().when().get("/products").then().assertThat().contentType(ContentType.JSON);
+        given()
+                .when()
+                    .get("/products")
+                .then()
+                    .assertThat()
+                    .contentType(ContentType.JSON);
     }
 
     @Test
     void requestAllProducts_checkResponseTime_expectResponseTimeIsLessThan1000ms() {
-        given().when().get("/products").then().time(lessThan(1000L));
+        given()
+                .when()
+                    .get("/products")
+                .then()
+                    .time(lessThan(1000L));
     }
 
     @Test
     void requestProductWithID1_checkNameInResponseBody_expectIpad() { // get Product ID=1 and check that name is 'Ipad'
         System.out.println("Test getProductWithID1 response body:");
-        given().when().get("/products/1").then().log().body().assertThat().body("name", equalTo("iPad"));
+        given()
+                .when()
+                    .get("/products/1")
+                .then()
+                    .log().body()
+                    .assertThat()
+                    .body("name", equalTo("iPad"));
     }
 
     @Test
@@ -65,11 +85,16 @@ public class APItests {
         requestSpecification.header("Content-Type", "application/json"); // Add the Json to the body of the request
         requestSpecification.body(postRequestParams.toJSONString()); // Post the request and check the response
 
-        int newProductID = when().post("/products")
-                .then().log().body()
-                .assertThat().statusCode(201)
-                .extract()
-                .path("id");
+        int newProductID =
+                given()
+                        .when()
+                            .post("/products")
+                        .then()
+                            .log().body()
+                            .assertThat()
+                            .statusCode(201)
+                            .extract()
+                            .path("id");
         System.out.println("new product ID is: " + newProductID);
 
         // 2. update the newly created product and check status code is 200
@@ -84,13 +109,30 @@ public class APItests {
         requestSpecification.header("Content-Type", "application/json"); // Add the Json to the body of the request
         requestSpecification.body(putRequestParams.toJSONString()); // Post the request and check the response
 
-        when().put("/products/" + newProductID)
-                .then().log().body()
-                .assertThat().statusCode(200);
+        given()
+                .when()
+                    .put("/products/" + newProductID)
+                .then()
+                    .log().body()
+                    .assertThat()
+                    .statusCode(200)
+                    .body("name", equalTo("xbox"));
 
         // 3. delete newly created product
-        when().delete("/products/" + newProductID)
-                .then().log().body()
-                .assertThat().statusCode(200);
+        given()
+                .when()
+                    .delete("/products/" + newProductID)
+                .then()
+                    .log().body()
+                    .assertThat()
+                    .statusCode(200);
+
+        // 4. check that delete went through
+        given()
+                .when()
+                    .get("/products/" + newProductID)
+                .then()
+                    .assertThat()
+                    .statusCode(404);
     }
 }
